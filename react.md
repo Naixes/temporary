@@ -1,18 +1,36 @@
-React临时
-
 ## 组件化
 
 ### antd
 
 #### 按需加载
 
-使用react-app-rewired取代react-scripts
+```js
+// 按需引入
+import { Button } from 'antd';
+import "antd/dist/antd.css"
+// 配置按需导入：
+// 方案一
+// 安装react-app-rewired取代react-scripts，可以扩展webpack的配置
+// npm install react-app-rewired customize-cra babel-plugin-import -D
+// 编写配置文件config-overrides.js，参考同名文件
+// 用来参考的，本项目已eject，未使用
+const { override, fixBabelImports, addDecoratorsLegacy } = require("customize-cra");
 
-安装三个包
+// override生成webpack配置对象
+module.exports = override(
+  fixBabelImports("import", { // antd按需加载
+    libraryName: "antd",
+    libraryDirectory: "es",
+    style: "css"
+  }),
+  addDecoratorsLegacy() // 配置装饰器
+);
+// 修改scripts，使用react-app-rewired取代react-scripts
 
-新建一个l文件覆盖配置
-
-override方法生成webpack配置对象
+// 方案二（本项目使用）
+// npm run eject 
+// 修改配置文件
+```
 
 #### 配置装饰器
 
@@ -172,23 +190,81 @@ store
 
 #### 应用框架umi
 
+**环境准备**
+
+首先得有 [node](https://nodejs.org/en/)，并确保 node 版本是 10.13 或以上。（mac 下推荐使用 [nvm](https://github.com/creationix/nvm) 来管理 node 版本）
+
+```bash
+$ node -v
+v10.13.0
+```
+
+推荐使用 yarn 管理 npm 依赖，并[使用国内源](https://github.com/yiminghe/tyarn)（阿里用户使用内网源）。
+
+```bash
+# 国内源
+$ npm i yarn tyarn -g
+# 后面文档里的 yarn 换成 tyarn
+$ tyarn -v
+```
+
+```
+# 创建目录
+$ mkdir myapp && cd myapp
+
+# 安装依赖
+$ yarn add umi
+
+# 创建页面
+$ npx umi g page index --typescript --less
+
+# 启动开发
+$ npx umi dev
+```
+
+或者[通过脚手架快速上手](https://umijs.org/zh-CN/docs/getting-started)。
+
+**脚手架**
+
+先找个地方建个空目录。
+
+```bash
+$ mkdir myapp && cd myapp
+```
+
+通过官方工具创建项目，
+
+```bash
+$ yarn create @umijs/umi-app
+```
+
+**安装依赖**
+
+```bash
+$ yarn
+```
+
+**开始**
+
 基于dva
 
 结构
 
-`umi g page index //生成首页，路由`
+`npx umi g page index //生成首页，路由`
 
-`umi g page user/'$id' // 动态路由`
+`npx umi g page user/'$id' // 动态路由`
 
-`umi g layout ./users // 生成布局`
+`npx umi g layout ./users // 生成布局`
 
 umi/router提供路由器
 
 ##### 404页面
 
-`umi g page 404`
+`npx umi g page 404`
 
 ##### 布局页
+
+约定 src/layouts/index.js 为全局路由，返回一个 React 组件，通过 props.children 渲染子组件。
 
 创建layouts/index
 
