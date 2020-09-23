@@ -48,7 +48,7 @@ vue2时一个组件对应一个watcher，所以需要dom diff，并且是在组�
 
 浏览器架构
 
-![浏览器架构](/Users/huangsiying/project/github/temporary/media/浏览器架构.png)
+![浏览器架构](./media/浏览器架构.png)
 
 **渲染进程**：
 
